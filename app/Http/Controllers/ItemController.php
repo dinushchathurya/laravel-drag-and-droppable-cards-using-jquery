@@ -14,4 +14,21 @@ class ItemController extends Controller
 
         return view('welcome', compact('pendingItem', 'completeIte'));
     }
+
+    public function updateItem()
+    {
+        $input = $request->all();
+
+        foreach ($input['pendingArr'] as $key => $value) {
+            $key = $key + 1;
+            Item::where('id', $value)->update(['status'=> 0 , 'order'=> $key]);
+        }
+
+        foreach ($input['completeArr'] as $key => $value) {
+            $key = $key + 1;
+            Item::where('id', $value)->update(['status'=> 1 , 'order'=> $key]);
+        }
+
+        return response()->json(['status'=>'success']);
+    }
 }
